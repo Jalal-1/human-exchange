@@ -3,5 +3,5 @@ use crate::domain::job::manifest_url::ManifestUrl;
 
 pub struct NewJob {
     pub job_escrow_id: JobEscrowId,
-    pub manifest_url: ManifestUrl,
+    pub manifest_url: Option<ManifestUrl>,
 }
