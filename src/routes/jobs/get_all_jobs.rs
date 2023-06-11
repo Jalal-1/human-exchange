@@ -1,6 +1,6 @@
-use std::error;
-use actix_web::{HttpResponse, web};
+use actix_web::{web, HttpResponse};
 use sqlx::PgPool;
+use std::error;
 use uuid::Uuid;
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -9,7 +9,6 @@ pub struct Job {
     pub job_escrow_id: String,
     pub manifest_url: Option<String>,
 }
-
 
 pub async fn get_all_jobs(pool: web::Data<PgPool>) -> HttpResponse {
     let jobs = get_jobs(&pool).await;
@@ -27,11 +26,11 @@ pub async fn get_jobs(pool: &PgPool) -> Result<Vec<Job>, sqlx::Error> {
         FROM jobs
         "#
     )
-        .fetch_all(pool)
-        .await
-        .map_err(|e| {
-            tracing::error!("Failed to execute query: {:?}", e);
-            e
-        })?;
+    .fetch_all(pool)
+    .await
+    .map_err(|e| {
+        tracing::error!("Failed to execute query: {:?}", e);
+        e
+    })?;
     Ok(jobs)
 }

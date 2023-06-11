@@ -3,7 +3,7 @@ use serde_json::json;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct GraphJob {
-    pub id: String
+    pub id: String,
 }
 
 /// Graph response object for [`launchedEscrows`] query.

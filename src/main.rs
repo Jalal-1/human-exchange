@@ -1,8 +1,8 @@
-use sqlx::postgres::PgPoolOptions;
-use std::net::TcpListener;
 use human_exchange::configuration::get_configuration;
 use human_exchange::startup::run;
 use human_exchange::telemetry::{get_subscriber, init_subscriber};
+use sqlx::postgres::PgPoolOptions;
+use std::net::TcpListener;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
