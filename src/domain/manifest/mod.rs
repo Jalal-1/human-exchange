@@ -1,5 +1,7 @@
 mod description;
 mod fortunes_required;
 mod manifest_escrow_id;
-mod new_manifest;
+pub(crate) mod fetched_manifest;
 mod title;
+
+pub use fetched_manifest::*;

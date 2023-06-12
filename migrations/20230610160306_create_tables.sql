@@ -1,8 +1,13 @@
--- Create Jobs Table
 CREATE TABLE jobs(
-   job_id uuid NOT NULL,
-   PRIMARY KEY (job_id),
+   job_id UUID PRIMARY KEY,   
    job_escrow_id TEXT NOT NULL UNIQUE,
    manifest_url TEXT,
    posted BIGINT
+);
+CREATE TABLE manifests(
+   manifest_id UUID PRIMARY KEY,
+   manifest_escrow_id TEXT UNIQUE,
+   title TEXT,
+   description TEXT,
+   fortunes_required INTEGER
 );

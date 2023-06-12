@@ -7,6 +7,7 @@ use uuid::Uuid;
 pub struct GraphJob {
     pub id: String,
     pub timestamp: String,
+    pub manifestUrl: Option<String>,
 }
 
 /// Graph response object for [`launchedEscrows`] query.
@@ -43,6 +44,7 @@ pub async fn get_escrows_from_graph(
             launchedEscrows(first: 500, orderBy: timestamp, orderDirection: desc{} ) {{
                 id
                 timestamp
+                manifestUrl
            }}
         }}
     "#,
@@ -78,13 +80,15 @@ pub async fn save_escrows_to_db(
             INSERT INTO jobs(
             job_id,
             job_escrow_id,
-            posted
+            posted,
+            manifest_url
             )
-            VALUES ($1, $2, $3)
+            VALUES ($1, $2, $3, $4)
             "#,
             Uuid::new_v4(),
             escrow.id,
-            timestamp
+            timestamp,
+            escrow.manifestUrl
         )
             .execute(pool)
             .await?;
@@ -92,14 +96,21 @@ pub async fn save_escrows_to_db(
     Ok(())
 }
 
+
 pub async fn get_last_fetched_escrow_id_time(
     pool: &PgPool,
 ) -> Result<Option<i64>, Box<dyn std::error::Error>> {
-    let last_escrow = sqlx::query!("SELECT posted FROM jobs ORDER BY posted DESC LIMIT 1")
-        .fetch_one(pool)
+    let result = sqlx::query!("SELECT posted FROM jobs ORDER BY posted DESC LIMIT 1")
+        .fetch_optional(pool)
         .await?;
-    Ok(last_escrow.posted)
+        
+    match result {
+        Some(last_escrow) => Ok(last_escrow.posted),
+        None => Ok(None),
+    }
 }
+
+
 
 pub async fn download_graph_jobs(pool: &PgPool) -> Result<(), Box<dyn std::error::Error>> {
     let last_posted = get_last_fetched_escrow_id_time(pool).await.unwrap_or(None);

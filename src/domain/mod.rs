@@ -1,5 +1,5 @@
-mod job;
-// mod manifest;
+pub(crate) mod job;
+pub(crate) mod manifest;
 
 pub use job::*;
-// pub use manifest::*;
+pub use manifest::*;
