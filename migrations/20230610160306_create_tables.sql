@@ -12,3 +12,9 @@ CREATE TABLE manifests(
    description TEXT,
    fortunes_required INTEGER
 );
+CREATE TABLE worker_responses (
+   response_id UUID PRIMARY KEY,
+   escrow_id TEXT,
+   response TEXT,
+   worker TEXT
+);

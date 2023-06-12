@@ -1,6 +1,7 @@
 use sqlx::PgPool;
 use tokio::time::{sleep, Duration};
 
+use crate::data::submit::submit_manifest_worker;
 use crate::data::{download_graph_jobs, fetch::fetch_manifest, save::save_manifest};
 use crate::domain::job::Job;
 
@@ -11,6 +12,8 @@ pub async fn background_worker(pool: PgPool) {
             Ok(_) => println!("Successfully downloaded jobs."),
             Err(e) => eprintln!("Failed to download jobs: {}", e),
         }
+
+        // submit_manifest_worker(pool.clone()).await;
 
         // Fetch jobs that are missing manifests.
         let jobs_missing_manifests = match fetch_jobs_missing_manifests(&pool).await {
