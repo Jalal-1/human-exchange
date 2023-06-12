@@ -1,0 +1,24 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./Cargo.toml",
+        "./Cargo.toml",
+        "./Cargo.toml",
+        "./Cargo.toml",
+        "./Cargo.toml",
+        "./Cargo.toml",
+        "./Cargo.toml"
+    ],
+    "rust-analyzer.showUnlinkedFileNotification": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "db3",
+            "database": "exchange-db",
+            "username": "postgres",
+            "password": "password"
+        }
+    ]
+}

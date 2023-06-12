@@ -4,7 +4,6 @@ use tokio::time::{sleep, Duration};
 use crate::data::{download_graph_jobs, fetch::fetch_manifest, save::save_manifest};
 use crate::domain::job::Job;
 
-
 pub async fn background_worker(pool: PgPool) {
     loop {
         // Fetch and save jobs every 60 seconds
@@ -27,7 +26,7 @@ pub async fn background_worker(pool: PgPool) {
             if let Some(manifest_url) = &job.manifest_url {
                 match fetch_manifest(manifest_url).await {
                     Ok(fetched_manifest) => {
-                        if let Err(e) = save_manifest(&pool, fetched_manifest).await {
+                        if let Err(e) = save_manifest(&pool, fetched_manifest, &job.job_escrow_id).await {
                             eprintln!("Failed to save manifest for job {}: {}", job.job_escrow_id, e);
                         }
                     }
@@ -36,9 +35,10 @@ pub async fn background_worker(pool: PgPool) {
             }
         }
 
-        sleep(Duration::from_secs(60)).await;
+        sleep(Duration::from_secs(6)).await;
     }
 }
+
 
 pub async fn fetch_jobs_missing_manifests(pool: &PgPool) -> Result<Vec<Job>, sqlx::Error> {
     let jobs = sqlx::query_as!(
@@ -55,3 +55,4 @@ pub async fn fetch_jobs_missing_manifests(pool: &PgPool) -> Result<Vec<Job>, sql
 
     Ok(jobs)
 }
+

@@ -6,6 +6,7 @@ CREATE TABLE jobs(
 );
 CREATE TABLE manifests(
    manifest_id UUID PRIMARY KEY,
+   manifest_url TEXT,
    manifest_escrow_id TEXT UNIQUE,
    title TEXT,
    description TEXT,

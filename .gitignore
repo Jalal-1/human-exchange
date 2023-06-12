@@ -18,6 +18,4 @@ Cargo.lock
 
 /target
 /.idea/human-exchange.iml
-db1.session.sql
-.vscode/settings.json
-PG-DB.session.sql
+*.session.sql

@@ -114,25 +114,9 @@ pub async fn get_last_fetched_escrow_id_time(
 
 pub async fn download_graph_jobs(pool: &PgPool) -> Result<(), Box<dyn std::error::Error>> {
     let last_posted = get_last_fetched_escrow_id_time(pool).await.unwrap_or(None);
+    println!("Last posted timestamp: {:?}", last_posted); // Add this line for logging
 
     let escrows = get_escrows_from_graph(last_posted).await?;
     save_escrows_to_db(pool, escrows).await?;
     Ok(())
 }
-
-// pub async fn download_graph_jobs(pool: &PgPool) -> Result<(), Box<dyn std::error::Error>> {
-//     // Query db to get last posted timestamp
-//     let last_posted = sqlx::query!(
-//         r#"
-//         SELECT posted
-//         FROM jobs
-//         ORDER BY posted DESC
-//         LIMIT 1
-//         "#,
-//     ).
-//
-//
-//     let escrows = get_escrows_from_graph().await?;
-//     save_escrows_to_db(pool, escrows).await?;
-//     Ok(())
-// }
